@@ -1,40 +1,23 @@
 #include<stdio.h>
-#include<stdlib.h>
+#include<string.h>
+#include<unistd.h>
 #include<fcntl.h>
-char buffer[2048];
-
-int main(int argc,char *argv[]){
-    int fold,fnew;
-
-    if(argc!=3){
-        printf("Needs more argument");
-        exit(0);
-    }
-    printf("Argumant %s",argv[0]);
-    printf("File1 %s",argv[1]);
-    printf("File 2 %s",argv[2]);
-    fold=open(argv[1],O_RDONLY);
-
-    if(fold==-1){
-        printf("Cannot open %s",argv[1]);
-        exit(0);
-    }
-
-    fnew=creat(argv[2],0666);
-
-    if(fnew==-1){
-        printf("cannot open %s",argv[2]);
-        exit(0);
-    }
-
-    copy(fold,fnew);
-    exit(0);
+ 
+int main (void)
+{
+    int fd[2];
+    char buf1[12] = "hello world";
+    char buf2[12];
+ 
+    // assume foobar.txt is already created
+    fd[0] = open("foobar.txt", O_RDWR);        
+    fd[1] = open("foobar.txt", O_RDWR);
+     
+    write(fd[0], buf1, strlen(buf1));        
+    write(1, buf2, read(fd[1], buf2, 12));
+ 
+    close(fd[0]);
+    close(fd[1]);
+ 
+    return 0;
 }
-
-copy(old,new)
-int new,old;{
-    int count;
-    while((count=read(old,buffer,sizeof(buffer)))>0)
-    write(new,buffer,count);
-}
-
