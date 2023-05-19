@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Enter a number"
 read s1
 echo "Enter another number"
